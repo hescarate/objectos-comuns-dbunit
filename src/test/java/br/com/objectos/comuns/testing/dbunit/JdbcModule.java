@@ -17,6 +17,9 @@ package br.com.objectos.comuns.testing.dbunit;
 
 import java.sql.Connection;
 
+import br.com.objectos.comuns.sql.JdbcCredentials;
+import br.com.objectos.comuns.sql.JdbcCredentialsBuilder;
+
 import com.google.inject.AbstractModule;
 
 /**
@@ -28,11 +31,15 @@ public class JdbcModule extends AbstractModule {
   protected void configure() {
     install(new ObjectosComunsDbunitModule());
 
-    install(new DatabaseTesterModuleBuilder() //
-        .jdbcDriverClass("org.hsqldb.jdbcDriver") //
+    JdbcCredentials credentials = new JdbcCredentialsBuilder() //
+        .driverClass("org.hsqldb.jdbcDriver") //
         .url("jdbc:hsqldb:mem:test") //
-        .username("sa") //
+        .user("sa") //
         .password("") //
+        .get();
+
+    install(new DatabaseTesterModuleBuilder() //
+        .jdbc(credentials) //
         .build());
 
     bind(Connection.class).toProvider(PlainOldConnectionSupplier.class);

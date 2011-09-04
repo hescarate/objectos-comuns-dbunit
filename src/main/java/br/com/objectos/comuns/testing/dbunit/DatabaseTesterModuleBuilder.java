@@ -18,6 +18,8 @@ package br.com.objectos.comuns.testing.dbunit;
 import org.dbunit.IDatabaseTester;
 import org.dbunit.JdbcDatabaseTester;
 
+import br.com.objectos.comuns.sql.JdbcCredentials;
+
 import com.google.common.base.Preconditions;
 import com.google.inject.AbstractModule;
 import com.google.inject.Module;
@@ -33,11 +35,11 @@ public class DatabaseTesterModuleBuilder {
     return new JndiModuleBuilder(lookupName);
   }
 
-  public JdbcModuleBuilder jdbcDriverClass(String driverClass) {
-    return new JdbcModuleBuilder(driverClass);
+  public JdbcModuleBuilder jdbc(JdbcCredentials credentials) {
+    return new JdbcModuleBuilder(credentials);
   }
 
-  protected class JndiModuleBuilder {
+  public class JndiModuleBuilder {
 
     private final String lookupName;
 
@@ -62,18 +64,23 @@ public class DatabaseTesterModuleBuilder {
 
   }
 
-  protected class JdbcModuleBuilder {
+  public class JdbcModuleBuilder {
 
     private final String driverClass;
 
-    private String url;
+    private final String url;
 
-    private String username;
+    private final String username;
 
-    private String password;
+    private final String password;
 
-    public JdbcModuleBuilder(String driverClass) {
-      this.driverClass = driverClass;
+    public JdbcModuleBuilder(JdbcCredentials credentials) {
+      Preconditions.checkNotNull(credentials);
+
+      this.driverClass = credentials.getDriverClass();
+      this.url = credentials.getUrl();
+      this.username = credentials.getUser();
+      this.password = credentials.getPassword();
     }
 
     public Module build() {
@@ -93,21 +100,6 @@ public class DatabaseTesterModuleBuilder {
           }
         }
       };
-    }
-
-    public JdbcModuleBuilder url(String url) {
-      this.url = url;
-      return this;
-    }
-
-    public JdbcModuleBuilder username(String username) {
-      this.username = username;
-      return this;
-    }
-
-    public JdbcModuleBuilder password(String password) {
-      this.password = password;
-      return this;
     }
 
   }
