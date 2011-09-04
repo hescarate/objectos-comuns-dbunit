@@ -13,36 +13,21 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package br.com.objectos.comuns.testes;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+package br.com.objectos.comuns.dbunit;
 
 /**
  * @author marcio.endo@objectos.com.br (Marcio Endo)
  */
-@Entity
-@Table(catalog = "OBJ", name = "ENTIDADE")
-public class EntidadeOBJ {
+public class DBUnitSetupException extends RuntimeException {
 
-  @Id
-  @Column(name = "ID")
-  private Integer id;
+  private static final long serialVersionUID = 1L;
 
-  @Column(name = "VALOR")
-  private String valor;
-
-  EntidadeOBJ() {
+  public DBUnitSetupException(String msg) {
+    super(msg);
   }
 
-  public Integer getId() {
-    return id;
-  }
-
-  public String getValor() {
-    return valor;
+  public DBUnitSetupException(Throwable cause) {
+    super(cause);
   }
 
 }

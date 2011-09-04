@@ -24,8 +24,6 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.NoSuchTableException;
 import org.dbunit.operation.DatabaseOperation;
 
-import br.com.objectos.comuns.testes.ExcecaoDePreparacaoDeTeste;
-
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -98,7 +96,7 @@ public class DBUnit {
               + "Esperava a existência da tabela %s " + "mas não a encontrei.\n"
               + "Você não se esqueceu de adicionar " + "a classe JPA no persistence.xml?\n*****",
               op.getFilename(), e.getMessage());
-          throw new ExcecaoDePreparacaoDeTeste(msg);
+          throw new DBUnitSetupException(msg);
         }
       }
 

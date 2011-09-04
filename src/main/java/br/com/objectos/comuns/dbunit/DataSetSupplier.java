@@ -26,8 +26,6 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
 
-import br.com.objectos.comuns.testes.ExcecaoDePreparacaoDeTeste;
-
 import com.google.common.base.Supplier;
 
 /**
@@ -67,9 +65,9 @@ public abstract class DataSetSupplier implements Supplier<IDataSet> {
       return new FlatXmlDataSet(reader, dtdMetadata, columnSensing, caseSensitiveTableNames);
 
     } catch (DataSetException e) {
-      throw new ExcecaoDePreparacaoDeTeste(e);
+      throw new DBUnitSetupException(e);
     } catch (IOException e) {
-      throw new ExcecaoDePreparacaoDeTeste(e);
+      throw new DBUnitSetupException(e);
     } finally {
 
     }
