@@ -30,6 +30,13 @@
 			<groupId>org.dbunit</groupId>
 			<artifactId>dbunit</artifactId>
 			<version>${org.dbunit.version}</version>
+			<exclusions>
+				<exclusion>
+					<!-- too old of a version -->
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>hsqldb</groupId>

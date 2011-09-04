@@ -15,27 +15,38 @@
  */
 package br.com.objectos.comuns.testing.dbunit;
 
-import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import com.google.inject.AbstractModule;
+import com.google.common.base.Objects;
 
 /**
  * @author marcio.endo@objectos.com.br (Marcio Endo)
  */
-public class JdbcModule extends AbstractModule {
+public class Entity {
+
+  private final int id;
+  private final String value;
+
+  public Entity(ResultSet rs) throws SQLException {
+    this.id = rs.getInt("ID");
+    this.value = rs.getString("VALUE");
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public String getValue() {
+    return value;
+  }
 
   @Override
-  protected void configure() {
-    install(new ObjectosComunsDbunitModule());
-
-    install(new DatabaseTesterModuleBuilder() //
-        .jdbcDriverClass("org.hsqldb.jdbcDriver") //
-        .url("jdbc:hsqldb:mem:test") //
-        .username("sa") //
-        .password("") //
-        .build());
-
-    bind(Connection.class).toProvider(PlainOldConnectionSupplier.class);
+  public String toString() {
+    return Objects.toStringHelper(this) //
+        .addValue(id) //
+        .addValue(value) //
+        .toString();
   }
 
 }

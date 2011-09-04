@@ -16,26 +16,35 @@
 package br.com.objectos.comuns.testing.dbunit;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
-import com.google.inject.AbstractModule;
+import org.dbunit.database.IDatabaseConnection;
+
+import com.google.common.base.Throwables;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
 
 /**
  * @author marcio.endo@objectos.com.br (Marcio Endo)
  */
-public class JdbcModule extends AbstractModule {
+@Singleton
+public class PlainOldConnectionSupplier implements Provider<Connection> {
+
+  private final Provider<IDatabaseConnection> dbunitConnection;
+
+  @Inject
+  public PlainOldConnectionSupplier(Provider<IDatabaseConnection> dbunitConnection) {
+    this.dbunitConnection = dbunitConnection;
+  }
 
   @Override
-  protected void configure() {
-    install(new ObjectosComunsDbunitModule());
-
-    install(new DatabaseTesterModuleBuilder() //
-        .jdbcDriverClass("org.hsqldb.jdbcDriver") //
-        .url("jdbc:hsqldb:mem:test") //
-        .username("sa") //
-        .password("") //
-        .build());
-
-    bind(Connection.class).toProvider(PlainOldConnectionSupplier.class);
+  public Connection get() {
+    try {
+      return dbunitConnection.get().getConnection();
+    } catch (SQLException e) {
+      throw Throwables.propagate(e);
+    }
   }
 
 }

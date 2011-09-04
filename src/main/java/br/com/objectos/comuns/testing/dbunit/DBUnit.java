@@ -39,15 +39,20 @@ public class DBUnit {
 
   private final Provider<IDatabaseConnection> connections;
 
-  private final List<DataSupplier> datasets;
+  private DefaultDataSupplierSet defaultSet = new EmptyDefaultDataSupplierSet();
 
   @Inject
-  DBUnit(Provider<IDatabaseConnection> connections, List<DataSupplier> datasets) {
+  DBUnit(Provider<IDatabaseConnection> connections) {
     this.connections = connections;
-    this.datasets = datasets;
+  }
+
+  @Inject(optional = true)
+  void setDefaultSet(DefaultDataSupplierSet defaultSet) {
+    this.defaultSet = defaultSet;
   }
 
   public void loadDefaultDataSet() {
+    List<DataSupplier> datasets = defaultSet.get();
     execute(datasets);
   }
 

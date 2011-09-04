@@ -22,6 +22,10 @@ import org.dbunit.operation.DatabaseOperation;
  */
 public abstract class TruncateSupplier extends DataSupplier {
 
+  public TruncateSupplier() {
+    super();
+  }
+
   public TruncateSupplier(String nome) {
     super(nome);
   }

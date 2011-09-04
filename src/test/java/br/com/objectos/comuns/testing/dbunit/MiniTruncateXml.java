@@ -15,27 +15,14 @@
  */
 package br.com.objectos.comuns.testing.dbunit;
 
-import java.sql.Connection;
-
-import com.google.inject.AbstractModule;
-
 /**
  * @author marcio.endo@objectos.com.br (Marcio Endo)
  */
-public class JdbcModule extends AbstractModule {
+public class MiniTruncateXml extends TruncateSupplier {
 
   @Override
-  protected void configure() {
-    install(new ObjectosComunsDbunitModule());
-
-    install(new DatabaseTesterModuleBuilder() //
-        .jdbcDriverClass("org.hsqldb.jdbcDriver") //
-        .url("jdbc:hsqldb:mem:test") //
-        .username("sa") //
-        .password("") //
-        .build());
-
-    bind(Connection.class).toProvider(PlainOldConnectionSupplier.class);
+  public String getFilename() {
+    return "mini-truncate.xml";
   }
 
 }
