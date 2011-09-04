@@ -11,7 +11,9 @@
 	<name>objectos comuns :: DBUnit</name>
 	<version>2.0-SNAPSHOT</version>
 	<properties>
+		<c3p0.version>0.9.1.2</c3p0.version>
 		<objectos.comuns.base.version>1.1.29-SNAPSHOT</objectos.comuns.base.version>
+		<org.dbunit.version>2.4.5</org.dbunit.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -19,84 +21,21 @@
 			<artifactId>objectos-comuns-base</artifactId>
 			<version>${objectos.comuns.base.version}</version>
 		</dependency>
-		<!-- Testes -->
-		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-all</artifactId>
-			<version>1.1</version>
-		</dependency>
-		<!-- Testes JPA -->
 		<dependency>
 			<groupId>c3p0</groupId>
 			<artifactId>c3p0</artifactId>
-			<version>0.9.1.2</version>
+			<version>${c3p0.version}</version>
 		</dependency>
-		<!-- DBUNIT -->
 		<dependency>
 			<groupId>org.dbunit</groupId>
 			<artifactId>dbunit</artifactId>
-			<version>2.4.5</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>slf4j-api</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<!-- selenium -->
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-common</artifactId>
-			<version>2.0a2</version>
-		</dependency>
-		<!-- spring mock contém um servidor JNDI de fácil utilização -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-mock</artifactId>
-			<version>2.0.8</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>commons-logging</artifactId>
-					<groupId>commons-logging</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<!-- hibernate -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernate.core.version}</version>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<artifactId>slf4j-api</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>${hibernate.validator.version}</version>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<artifactId>slf4j-api</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-			</exclusions>
+			<version>${org.dbunit.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 			<version>1.8.0.2</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.reflections</groupId>
-			<artifactId>reflections</artifactId>
-			<version>0.9.5</version>
-			<classifier>RC1</classifier>
 		</dependency>
 	</dependencies>
 </project>
