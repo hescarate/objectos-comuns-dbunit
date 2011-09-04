@@ -15,41 +15,13 @@
  */
 package br.com.objectos.comuns.testing.dbunit;
 
-import org.dbunit.IDatabaseTester;
 import org.dbunit.database.IDatabaseConnection;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
 
 /**
  * @author marcio.endo@objectos.com.br (Marcio Endo)
  */
-@Singleton
-class IDatabaseConnectionProvider implements Provider<IDatabaseConnection> {
+interface VendorConfig {
 
-  private final IDatabaseTester databaseTester;
-
-  private final Vendor vendor;
-
-  @Inject
-  public IDatabaseConnectionProvider(IDatabaseTester databaseTester, Vendor vendor) {
-    this.databaseTester = databaseTester;
-    this.vendor = vendor;
-  }
-
-  @Override
-  public IDatabaseConnection get() {
-    try {
-      IDatabaseConnection connection = databaseTester.getConnection();
-
-      VendorConfig config = vendor.getConfig();
-      config.configure(connection);
-
-      return connection;
-    } catch (Exception e) {
-      return null;
-    }
-  }
+  void configure(IDatabaseConnection connection);
 
 }

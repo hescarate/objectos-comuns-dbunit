@@ -18,20 +18,20 @@ package br.com.objectos.comuns.testing.dbunit;
 /**
  * @author marcio.endo@objectos.com.br (Marcio Endo)
  */
-public class DBUnitSetupException extends RuntimeException {
+enum Vendor {
 
-  private static final long serialVersionUID = 1L;
+  HSQLDB(new HsqldbConfig()),
 
-  public DBUnitSetupException(String msg) {
-    super(msg);
+  MYSQL(new MysqlConfig());
+
+  private final VendorConfig config;
+
+  private Vendor(VendorConfig config) {
+    this.config = config;
   }
 
-  public DBUnitSetupException(String message, Throwable cause) {
-    super(message, cause);
-  }
-
-  public DBUnitSetupException(Throwable cause) {
-    super(cause);
+  public VendorConfig getConfig() {
+    return config;
   }
 
 }

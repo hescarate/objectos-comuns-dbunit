@@ -35,6 +35,7 @@ import com.google.inject.Singleton;
 @Singleton
 public class DBUnit {
 
+  public static final String METADATA_HANDLER = "http://www.dbunit.org/properties/metadataHandler";
   public static final String QUALIFIED_TABLE_NAMES = "http://www.dbunit.org/features/qualifiedTableNames";
 
   private final Provider<IDatabaseConnection> connections;
@@ -101,7 +102,7 @@ public class DBUnit {
               + "Esperava a existência da tabela %s " + "mas não a encontrei.\n"
               + "Você não se esqueceu de adicionar " + "a classe JPA no persistence.xml?\n*****",
               op.getFilename(), e.getMessage());
-          throw new DBUnitSetupException(msg);
+          throw new DBUnitSetupException(msg, e);
         }
       }
 

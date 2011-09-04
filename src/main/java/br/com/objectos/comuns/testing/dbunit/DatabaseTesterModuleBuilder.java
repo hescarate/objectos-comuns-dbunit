@@ -31,6 +31,8 @@ import com.google.inject.name.Names;
  */
 public class DatabaseTesterModuleBuilder {
 
+  private Vendor vendor = Vendor.HSQLDB;
+
   public JndiModuleBuilder jndi(String lookupName) {
     return new JndiModuleBuilder(lookupName);
   }
@@ -47,6 +49,11 @@ public class DatabaseTesterModuleBuilder {
       this.lookupName = lookupName;
     }
 
+    public JndiModuleBuilder withMysql() {
+      vendor = Vendor.MYSQL;
+      return this;
+    }
+
     public Module build() {
       return new AbstractModule() {
         @Override
@@ -58,6 +65,8 @@ public class DatabaseTesterModuleBuilder {
           bind(String.class) //
               .annotatedWith(Names.named("obj.comuns.dbunit.jndi")) //
               .toInstance(lookupName);
+
+          bind(Vendor.class).toInstance(vendor);
         }
       };
     }
@@ -83,6 +92,11 @@ public class DatabaseTesterModuleBuilder {
       this.password = credentials.getPassword();
     }
 
+    public JdbcModuleBuilder withMysql() {
+      vendor = Vendor.MYSQL;
+      return this;
+    }
+
     public Module build() {
       Preconditions.checkNotNull(url, "JBDC connection url cannot be null");
       Preconditions.checkNotNull(username, "JDBC connection username cannot be null");
@@ -93,8 +107,11 @@ public class DatabaseTesterModuleBuilder {
         protected void configure() {
           try {
             JdbcDatabaseTester tester = new JdbcDatabaseTester(driverClass, url, username, password);
+
             bind(IDatabaseTester.class) //
                 .toInstance(tester);
+
+            bind(Vendor.class).toInstance(vendor);
           } catch (ClassNotFoundException e) {
             addError(e);
           }

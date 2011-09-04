@@ -15,41 +15,23 @@
  */
 package br.com.objectos.comuns.testing.dbunit;
 
-import org.dbunit.IDatabaseTester;
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
+import org.dbunit.ext.mysql.MySqlMetadataHandler;
 
 /**
  * @author marcio.endo@objectos.com.br (Marcio Endo)
  */
-@Singleton
-class IDatabaseConnectionProvider implements Provider<IDatabaseConnection> {
-
-  private final IDatabaseTester databaseTester;
-
-  private final Vendor vendor;
-
-  @Inject
-  public IDatabaseConnectionProvider(IDatabaseTester databaseTester, Vendor vendor) {
-    this.databaseTester = databaseTester;
-    this.vendor = vendor;
-  }
+class MysqlConfig implements VendorConfig {
 
   @Override
-  public IDatabaseConnection get() {
-    try {
-      IDatabaseConnection connection = databaseTester.getConnection();
+  public void configure(IDatabaseConnection connection) {
+    DatabaseConfig config = connection.getConfig();
 
-      VendorConfig config = vendor.getConfig();
-      config.configure(connection);
+    config.setProperty(DBUnit.METADATA_HANDLER, //
+        new MySqlMetadataHandler());
 
-      return connection;
-    } catch (Exception e) {
-      return null;
-    }
+    config.setProperty(DBUnit.QUALIFIED_TABLE_NAMES, true);
   }
 
 }
