@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package br.com.objectos.comuns.dbunit;
+package br.com.objectos.comuns.testing.dbunit;
 
 import static com.google.common.collect.Lists.asList;
 
@@ -39,32 +39,32 @@ public class DBUnit {
 
   private final Provider<IDatabaseConnection> connections;
 
-  private final List<DataSetSupplier> datasets;
+  private final List<DataSupplier> datasets;
 
   @Inject
-  DBUnit(Provider<IDatabaseConnection> connections, List<DataSetSupplier> datasets) {
+  DBUnit(Provider<IDatabaseConnection> connections, List<DataSupplier> datasets) {
     this.connections = connections;
     this.datasets = datasets;
   }
 
-  public void executar() {
-    executar(datasets);
+  public void loadDefaultDataSet() {
+    execute(datasets);
   }
 
-  public void executar(DataSetSupplier primeiro) {
-    List<DataSetSupplier> arquivos = ImmutableList.of(primeiro);
-    executar(arquivos);
+  public void load(DataSupplier supplier) {
+    List<DataSupplier> arquivos = ImmutableList.of(supplier);
+    execute(arquivos);
   }
 
-  public void executar(DataSetSupplier primeiro, DataSetSupplier... outros) {
-    List<DataSetSupplier> arquivos = asList(primeiro, outros);
-    executar(arquivos);
+  public void load(DataSupplier first, DataSupplier... more) {
+    List<DataSupplier> arquivos = asList(first, more);
+    execute(arquivos);
   }
 
-  private void executar(List<DataSetSupplier> arquivos) {
+  private void execute(List<DataSupplier> datasets) {
     try {
 
-      executarOperacoes(arquivos);
+      tryToExecute(datasets);
 
     } catch (Exception e) {
 
@@ -74,22 +74,22 @@ public class DBUnit {
     }
   }
 
-  private void executarOperacoes(List<DataSetSupplier> ops) throws Exception {
+  private void tryToExecute(List<DataSupplier> datasets) throws Exception {
 
     IDatabaseConnection conn = connections.get(); // don't get conned
 
     try {
       disableReferentialIntegrity(conn);
 
-      for (DataSetSupplier op : ops) {
+      for (DataSupplier op : datasets) {
 
         try {
 
           IDataSet dataSet = op.get();
 
           DatabaseOperation operacao = op.getOperation();
-          DatabaseOperation transacao = DatabaseOperation.TRANSACTION(operacao);
-          transacao.execute(conn, dataSet);
+          DatabaseOperation trx = DatabaseOperation.TRANSACTION(operacao);
+          trx.execute(conn, dataSet);
 
         } catch (NoSuchTableException e) {
           String msg = String.format("\n*****\nInserção do ArquivoDBUnit:%s falhou!!!\n"

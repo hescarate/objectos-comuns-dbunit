@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package br.com.objectos.comuns.dbunit;
+package br.com.objectos.comuns.testing.dbunit;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,20 +26,28 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
 
+import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;
 
 /**
  * @author marcio.endo@objectos.com.br (Marcio Endo)
  */
-public abstract class DataSetSupplier implements Supplier<IDataSet> {
+public abstract class DataSupplier implements Supplier<IDataSet> {
 
   private final String filename;
 
-  public DataSetSupplier(String filename) {
+  public DataSupplier() {
+    this(null);
+  }
+
+  public DataSupplier(String filename) {
     this.filename = filename;
   }
 
   public String getFilename() {
+    // this is so it won't break legacy code...
+    Preconditions.checkNotNull(filename, "You must provide a filename either:\n 1. by overriding "
+        + "the getFilename() method; or\n 2. providing it through the constructor");
     return filename;
   }
 
@@ -52,7 +60,7 @@ public abstract class DataSetSupplier implements Supplier<IDataSet> {
 
     try {
 
-      String classpathName = "dbunit/" + filename;
+      String classpathName = "dbunit/" + getFilename();
       ClassLoader classLoader = this.getClass().getClassLoader();
 
       InputStream in = classLoader.getResourceAsStream(classpathName);

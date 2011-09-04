@@ -4,7 +4,7 @@
  * Propriedade de Objectos Fábrica de Software LTDA.
  * Reprodução parcial ou total proibida.
  */
-package br.com.objectos.comuns.dbunit;
+package br.com.objectos.comuns.testing.dbunit;
 
 import org.dbunit.database.IDatabaseConnection;
 

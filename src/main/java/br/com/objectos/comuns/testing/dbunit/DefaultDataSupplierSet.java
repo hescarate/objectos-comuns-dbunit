@@ -13,21 +13,15 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package br.com.objectos.comuns.dbunit;
+package br.com.objectos.comuns.testing.dbunit;
+
+import java.util.List;
 
 /**
  * @author marcio.endo@objectos.com.br (Marcio Endo)
  */
-public class DBUnitSetupException extends RuntimeException {
+public interface DefaultDataSupplierSet {
 
-  private static final long serialVersionUID = 1L;
-
-  public DBUnitSetupException(String msg) {
-    super(msg);
-  }
-
-  public DBUnitSetupException(Throwable cause) {
-    super(cause);
-  }
+  List<DataSupplier> get();
 
 }

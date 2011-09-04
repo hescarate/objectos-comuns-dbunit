@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package br.com.objectos.comuns.dbunit;
+package br.com.objectos.comuns.testing.dbunit;
 
 import org.dbunit.IDatabaseTester;
 import org.dbunit.database.IDatabaseConnection;

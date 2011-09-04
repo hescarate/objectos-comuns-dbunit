@@ -13,30 +13,21 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package br.com.objectos.comuns.dbunit;
-
-import org.dbunit.IDatabaseTester;
-import org.dbunit.JndiDatabaseTester;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.name.Named;
+package br.com.objectos.comuns.testing.dbunit;
 
 /**
  * @author marcio.endo@objectos.com.br (Marcio Endo)
  */
-class JndiDatabaseTesterProvider implements Provider<IDatabaseTester> {
+public class DBUnitSetupException extends RuntimeException {
 
-  private final String lookupName;
+  private static final long serialVersionUID = 1L;
 
-  @Inject
-  public JndiDatabaseTesterProvider(@Named("obj.comuns.dbunit.jndi") String lookupName) {
-    this.lookupName = lookupName;
+  public DBUnitSetupException(String msg) {
+    super(msg);
   }
 
-  @Override
-  public IDatabaseTester get() {
-    return new JndiDatabaseTester(lookupName);
+  public DBUnitSetupException(Throwable cause) {
+    super(cause);
   }
 
 }

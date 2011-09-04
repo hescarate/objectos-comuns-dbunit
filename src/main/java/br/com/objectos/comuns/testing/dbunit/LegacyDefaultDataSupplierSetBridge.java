@@ -13,22 +13,33 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package br.com.objectos.comuns.dbunit;
+package br.com.objectos.comuns.testing.dbunit;
 
-import org.dbunit.operation.DatabaseOperation;
+import java.util.List;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 /**
  * @author marcio.endo@objectos.com.br (Marcio Endo)
  */
-public abstract class TruncateSupplier extends DataSetSupplier {
+public class LegacyDefaultDataSupplierSetBridge implements Provider<DefaultDataSupplierSet> {
 
-  public TruncateSupplier(String nome) {
-    super(nome);
+  private final List<DataSupplier> datasets;
+
+  @Inject
+  public LegacyDefaultDataSupplierSetBridge(List<DataSupplier> datasets) {
+    this.datasets = datasets;
   }
 
   @Override
-  public DatabaseOperation getOperation() {
-    return DatabaseOperation.DELETE_ALL;
+  public DefaultDataSupplierSet get() {
+    return new DefaultDataSupplierSet() {
+      @Override
+      public List<DataSupplier> get() {
+        return datasets;
+      }
+    };
   }
 
 }

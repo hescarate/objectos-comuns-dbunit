@@ -8,7 +8,7 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>objectos-comuns-dbunit</artifactId>
-	<name>objectos comuns :: DBUnit</name>
+	<name>objectos comuns :: testing :: DBUnit</name>
 	<version>2.0-SNAPSHOT</version>
 	<properties>
 		<c3p0.version>0.9.1.2</c3p0.version>

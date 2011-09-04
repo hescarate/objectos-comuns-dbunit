@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package br.com.objectos.comuns.dbunit;
+package br.com.objectos.comuns.testing.dbunit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -23,6 +23,8 @@ import org.dbunit.IDatabaseTester;
 import org.dbunit.JdbcDatabaseTester;
 import org.dbunit.JndiDatabaseTester;
 import org.testng.annotations.Test;
+
+import br.com.objectos.comuns.testing.dbunit.DatabaseTesterModuleBuilder;
 
 import com.google.inject.Guice;
 import com.google.inject.Module;
@@ -45,7 +47,7 @@ public class DatabaseTesterModuleBuilderTest {
 
   public void it_should_build_a_jdbc_module() {
     Module module = newBuilder() //
-        .driverClass("java.lang.Object") //
+        .jdbcDriverClass("java.lang.Object") //
         .url("java:mysql://localhost/db") //
         .username("sa") //
         .password("unbreakable") //

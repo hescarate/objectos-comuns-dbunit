@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package br.com.objectos.comuns.dbunit;
+package br.com.objectos.comuns.testing.dbunit;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,9 +24,9 @@ import java.util.zip.GZIPInputStream;
 /**
  * @author marcio.endo@objectos.com.br (Marcio Endo)
  */
-public class ZippedDataSetSupplier extends DataSetSupplier {
+public class ZippedDataSupplier extends DataSupplier {
 
-  public ZippedDataSetSupplier(String nome) {
+  public ZippedDataSupplier(String nome) {
     super(nome);
   }
 
