@@ -26,6 +26,10 @@ public class DBUnitSetupException extends RuntimeException {
     super(msg);
   }
 
+  public DBUnitSetupException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
   public DBUnitSetupException(Throwable cause) {
     super(cause);
   }

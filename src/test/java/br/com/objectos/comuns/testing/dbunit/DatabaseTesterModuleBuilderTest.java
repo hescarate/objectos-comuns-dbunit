@@ -24,7 +24,8 @@ import org.dbunit.JdbcDatabaseTester;
 import org.dbunit.JndiDatabaseTester;
 import org.testng.annotations.Test;
 
-import br.com.objectos.comuns.testing.dbunit.DatabaseTesterModuleBuilder;
+import br.com.objectos.comuns.sql.JdbcCredentials;
+import br.com.objectos.comuns.sql.JdbcCredentialsBuilder;
 
 import com.google.inject.Guice;
 import com.google.inject.Module;
@@ -46,11 +47,15 @@ public class DatabaseTesterModuleBuilderTest {
   }
 
   public void it_should_build_a_jdbc_module() {
-    Module module = newBuilder() //
-        .jdbcDriverClass("java.lang.Object") //
+    JdbcCredentials credentials = new JdbcCredentialsBuilder() //
+        .driverClass("java.lang.Object") //
         .url("java:mysql://localhost/db") //
-        .username("sa") //
+        .user("sa") //
         .password("unbreakable") //
+        .get();
+
+    Module module = newBuilder() //
+        .jdbc(credentials) //
         .build();
 
     IDatabaseTester tester = Guice.createInjector(module).getInstance(IDatabaseTester.class);

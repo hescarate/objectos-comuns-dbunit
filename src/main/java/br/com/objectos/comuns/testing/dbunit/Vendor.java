@@ -15,34 +15,23 @@
  */
 package br.com.objectos.comuns.testing.dbunit;
 
-import java.sql.Connection;
-
-import br.com.objectos.comuns.sql.JdbcCredentials;
-import br.com.objectos.comuns.sql.JdbcCredentialsBuilder;
-
-import com.google.inject.AbstractModule;
-
 /**
  * @author marcio.endo@objectos.com.br (Marcio Endo)
  */
-public class JdbcModule extends AbstractModule {
+enum Vendor {
 
-  @Override
-  protected void configure() {
-    install(new ObjectosComunsDbunitModule());
+  HSQLDB(new HsqldbConfig()),
 
-    JdbcCredentials credentials = new JdbcCredentialsBuilder() //
-        .driverClass("org.hsqldb.jdbcDriver") //
-        .url("jdbc:hsqldb:mem:test") //
-        .user("sa") //
-        .password("") //
-        .get();
+  MYSQL(new MysqlConfig());
 
-    install(new DatabaseTesterModuleBuilder() //
-        .jdbc(credentials) //
-        .build());
+  private final VendorConfig config;
 
-    bind(Connection.class).toProvider(PlainOldConnectionSupplier.class);
+  private Vendor(VendorConfig config) {
+    this.config = config;
+  }
+
+  public VendorConfig getConfig() {
+    return config;
   }
 
 }

@@ -15,34 +15,23 @@
  */
 package br.com.objectos.comuns.testing.dbunit;
 
-import java.sql.Connection;
-
-import br.com.objectos.comuns.sql.JdbcCredentials;
-import br.com.objectos.comuns.sql.JdbcCredentialsBuilder;
-
-import com.google.inject.AbstractModule;
+import org.dbunit.database.DatabaseConfig;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.ext.mysql.MySqlMetadataHandler;
 
 /**
  * @author marcio.endo@objectos.com.br (Marcio Endo)
  */
-public class JdbcModule extends AbstractModule {
+class MysqlConfig implements VendorConfig {
 
   @Override
-  protected void configure() {
-    install(new ObjectosComunsDbunitModule());
+  public void configure(IDatabaseConnection connection) {
+    DatabaseConfig config = connection.getConfig();
 
-    JdbcCredentials credentials = new JdbcCredentialsBuilder() //
-        .driverClass("org.hsqldb.jdbcDriver") //
-        .url("jdbc:hsqldb:mem:test") //
-        .user("sa") //
-        .password("") //
-        .get();
+    config.setProperty(DBUnit.METADATA_HANDLER, //
+        new MySqlMetadataHandler());
 
-    install(new DatabaseTesterModuleBuilder() //
-        .jdbc(credentials) //
-        .build());
-
-    bind(Connection.class).toProvider(PlainOldConnectionSupplier.class);
+    config.setProperty(DBUnit.QUALIFIED_TABLE_NAMES, true);
   }
 
 }

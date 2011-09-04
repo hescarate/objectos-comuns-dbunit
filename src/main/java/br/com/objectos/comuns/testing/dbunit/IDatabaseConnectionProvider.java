@@ -30,9 +30,12 @@ class IDatabaseConnectionProvider implements Provider<IDatabaseConnection> {
 
   private final IDatabaseTester databaseTester;
 
+  private final Vendor vendor;
+
   @Inject
-  IDatabaseConnectionProvider(IDatabaseTester databaseTester) {
+  public IDatabaseConnectionProvider(IDatabaseTester databaseTester, Vendor vendor) {
     this.databaseTester = databaseTester;
+    this.vendor = vendor;
   }
 
   @Override
@@ -40,18 +43,13 @@ class IDatabaseConnectionProvider implements Provider<IDatabaseConnection> {
     try {
       IDatabaseConnection connection = databaseTester.getConnection();
 
-      boolean tableNames = obterPropriedade();
-      connection.getConfig().setFeature(DBUnit.QUALIFIED_TABLE_NAMES, tableNames);
+      VendorConfig config = vendor.getConfig();
+      config.configure(connection);
 
       return connection;
     } catch (Exception e) {
       return null;
     }
-  }
-
-  private boolean obterPropriedade() {
-    String property = System.getProperty(DBUnit.QUALIFIED_TABLE_NAMES);
-    return property == null ? true : Boolean.valueOf(property);
   }
 
 }
