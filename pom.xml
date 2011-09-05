@@ -10,7 +10,7 @@
 	<name>objectos comuns :: testing :: DBUnit</name>
 	<version>2.0.0-SNAPSHOT</version>
 	<properties>
-		<objectos.comuns.base.version>2.0-SNAPSHOT</objectos.comuns.base.version>
+		<objectos.comuns.base.version>2.0.0-SNAPSHOT</objectos.comuns.base.version>
 		<org.dbunit.version>2.4.6</org.dbunit.version>
 	</properties>
 	<dependencies>
