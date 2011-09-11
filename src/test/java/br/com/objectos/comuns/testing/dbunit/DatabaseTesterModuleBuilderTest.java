@@ -25,10 +25,11 @@ import org.dbunit.JndiDatabaseTester;
 import org.testng.annotations.Test;
 
 import br.com.objectos.comuns.sql.JdbcCredentials;
-import br.com.objectos.comuns.sql.JdbcCredentialsBuilder;
+import br.com.objectos.comuns.sql.PropertiesJdbcCredentialsProvider;
 
 import com.google.inject.Guice;
 import com.google.inject.Module;
+import com.google.inject.Provider;
 
 /**
  * @author marcio.endo@objectos.com.br (Marcio Endo)
@@ -47,12 +48,7 @@ public class DatabaseTesterModuleBuilderTest {
   }
 
   public void it_should_build_a_jdbc_module() {
-    JdbcCredentials credentials = new JdbcCredentialsBuilder() //
-        .driverClass("java.lang.Object") //
-        .url("java:mysql://localhost/db") //
-        .user("sa") //
-        .password("unbreakable") //
-        .get();
+    Provider<JdbcCredentials> credentials = new PropertiesJdbcCredentialsProvider(getClass());
 
     Module module = newBuilder() //
         .jdbc(credentials) //
@@ -61,15 +57,15 @@ public class DatabaseTesterModuleBuilderTest {
     IDatabaseTester tester = Guice.createInjector(module).getInstance(IDatabaseTester.class);
 
     assertThat(tester, instanceOf(JdbcDatabaseTester.class));
-    assertThat(tester.toString(), containsString("=java.lang.Object"));
-    assertThat(tester.toString(), containsString("=java:mysql://localhost/db"));
+    assertThat(tester.toString(), containsString("=org.hsqldb.jdbcDriver"));
+    assertThat(tester.toString(), containsString("=jdbc:hsqldb:mem:obj-comuns-jdbc"));
     assertThat(tester.toString(), containsString("=sa"));
     // assertThat(tester.toString(), containsString("=unbreakable")); duh! makes
     // sense
   }
 
-  private DatabaseTesterModuleBuilder newBuilder() {
-    return new DatabaseTesterModuleBuilder();
+  private DbunitModuleBuilder newBuilder() {
+    return new DbunitModuleBuilder();
   }
 
 }

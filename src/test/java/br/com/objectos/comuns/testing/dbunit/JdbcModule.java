@@ -18,9 +18,10 @@ package br.com.objectos.comuns.testing.dbunit;
 import java.sql.Connection;
 
 import br.com.objectos.comuns.sql.JdbcCredentials;
-import br.com.objectos.comuns.sql.JdbcCredentialsBuilder;
+import br.com.objectos.comuns.sql.PropertiesJdbcCredentialsProvider;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Provider;
 
 /**
  * @author marcio.endo@objectos.com.br (Marcio Endo)
@@ -29,16 +30,9 @@ public class JdbcModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    install(new ObjectosComunsDbunitModule());
+    Provider<JdbcCredentials> credentials = new PropertiesJdbcCredentialsProvider(getClass());
 
-    JdbcCredentials credentials = new JdbcCredentialsBuilder() //
-        .driverClass("org.hsqldb.jdbcDriver") //
-        .url("jdbc:hsqldb:mem:test") //
-        .user("sa") //
-        .password("") //
-        .get();
-
-    install(new DatabaseTesterModuleBuilder() //
+    install(new DbunitModuleBuilder() //
         .jdbc(credentials) //
         .build());
 
