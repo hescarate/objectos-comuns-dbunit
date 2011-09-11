@@ -1,35 +1,28 @@
 /*
- * Copyright 2011 Objectos, Fábrica de Software LTDA.
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * ObjectosComunsDbunitModule.java criado em 04/09/2011
+ * 
+ * Propriedade de Objectos Fábrica de Software LTDA.
+ * Reprodução parcial ou total proibida.
  */
 package br.com.objectos.comuns.testing.dbunit;
 
 import org.dbunit.IDatabaseTester;
 import org.dbunit.JdbcDatabaseTester;
+import org.dbunit.database.IDatabaseConnection;
 
 import br.com.objectos.comuns.sql.JdbcCredentials;
 
 import com.google.common.base.Preconditions;
 import com.google.inject.AbstractModule;
 import com.google.inject.Module;
+import com.google.inject.Provider;
 import com.google.inject.Scopes;
 import com.google.inject.name.Names;
 
 /**
  * @author marcio.endo@objectos.com.br (Marcio Endo)
  */
-public class DatabaseTesterModuleBuilder {
+public class DbunitModuleBuilder {
 
   private Vendor vendor = Vendor.HSQLDB;
 
@@ -37,8 +30,16 @@ public class DatabaseTesterModuleBuilder {
     return new JndiModuleBuilder(lookupName);
   }
 
-  public JdbcModuleBuilder jdbc(JdbcCredentials credentials) {
-    return new JdbcModuleBuilder(credentials);
+  public JdbcModuleBuilder jdbc(Provider<JdbcCredentials> credentialsProvider) {
+    return new JdbcModuleBuilder(credentialsProvider);
+  }
+
+  private static class BaseModule extends AbstractModule {
+    @Override
+    protected void configure() {
+      bind(IDatabaseConnection.class).toProvider(IDatabaseConnectionProvider.class);
+      bind(DBUnit.class);
+    }
   }
 
   public class JndiModuleBuilder {
@@ -58,6 +59,8 @@ public class DatabaseTesterModuleBuilder {
       return new AbstractModule() {
         @Override
         protected void configure() {
+          install(new BaseModule());
+
           bind(IDatabaseTester.class) //
               .toProvider(JndiDatabaseTesterProvider.class) //
               .in(Scopes.SINGLETON);
@@ -83,7 +86,9 @@ public class DatabaseTesterModuleBuilder {
 
     private final String password;
 
-    public JdbcModuleBuilder(JdbcCredentials credentials) {
+    public JdbcModuleBuilder(Provider<JdbcCredentials> credentialsProvider) {
+      JdbcCredentials credentials = credentialsProvider.get();
+
       Preconditions.checkNotNull(credentials);
 
       this.driverClass = credentials.getDriverClass();
@@ -106,6 +111,8 @@ public class DatabaseTesterModuleBuilder {
         @Override
         protected void configure() {
           try {
+            install(new BaseModule());
+
             JdbcDatabaseTester tester = new JdbcDatabaseTester(driverClass, url, username, password);
 
             bind(IDatabaseTester.class) //
