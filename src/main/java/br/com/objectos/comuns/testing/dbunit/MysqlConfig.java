@@ -17,6 +17,7 @@ package br.com.objectos.comuns.testing.dbunit;
 
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.ext.mysql.MySqlDataTypeFactory;
 import org.dbunit.ext.mysql.MySqlMetadataHandler;
 
 /**
@@ -27,6 +28,8 @@ class MysqlConfig implements VendorConfig {
   @Override
   public void configure(IDatabaseConnection connection) {
     DatabaseConfig config = connection.getConfig();
+
+    config.setProperty(DBUnit.DATATYPE_FACTORY, new MySqlDataTypeFactory());
 
     config.setProperty(DBUnit.METADATA_HANDLER, //
         new MySqlMetadataHandler());

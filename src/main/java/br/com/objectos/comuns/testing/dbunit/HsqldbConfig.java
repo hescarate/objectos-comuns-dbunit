@@ -17,6 +17,7 @@ package br.com.objectos.comuns.testing.dbunit;
 
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.ext.hsqldb.HsqldbDataTypeFactory;
 
 /**
  * @author marcio.endo@objectos.com.br (Marcio Endo)
@@ -26,6 +27,8 @@ class HsqldbConfig implements VendorConfig {
   @Override
   public void configure(IDatabaseConnection connection) {
     DatabaseConfig config = connection.getConfig();
+
+    config.setProperty(DBUnit.DATATYPE_FACTORY, new HsqldbDataTypeFactory());
 
     config.setProperty(DBUnit.QUALIFIED_TABLE_NAMES, true);
   }
