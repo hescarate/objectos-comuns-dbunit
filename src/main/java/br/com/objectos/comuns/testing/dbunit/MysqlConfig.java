@@ -31,6 +31,8 @@ class MysqlConfig implements VendorConfig {
 
     config.setProperty(DBUnit.DATATYPE_FACTORY, new MySqlDataTypeFactory());
 
+    config.setProperty(DBUnit.ESCAPE_PATTERN, "`?`");
+
     config.setProperty(DBUnit.METADATA_HANDLER, //
         new MySqlMetadataHandler());
 

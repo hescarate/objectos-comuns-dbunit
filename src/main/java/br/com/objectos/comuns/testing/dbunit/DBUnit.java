@@ -36,6 +36,7 @@ import com.google.inject.Singleton;
 public class DBUnit {
 
   public static final String DATATYPE_FACTORY = "http://www.dbunit.org/properties/datatypeFactory";
+  public static final String ESCAPE_PATTERN = "http://www.dbunit.org/properties/escapePattern";
   public static final String METADATA_HANDLER = "http://www.dbunit.org/properties/metadataHandler";
   public static final String QUALIFIED_TABLE_NAMES = "http://www.dbunit.org/features/qualifiedTableNames";
 
