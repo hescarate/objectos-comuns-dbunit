@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>objectos-comuns-dbunit</artifactId>
 	<name>objectos comuns :: testing :: DBUnit</name>
-	<version>2.0.2-SNAPSHOT</version>
+	<version>2.0.2</version>
 	<scm>
 		<connection>scm:git:git://objectos/objectos-comuns-dbunit.git</connection>
 		<developerConnection>scm:git:git@github.com:objectos/objectos-comuns-dbunit.git</developerConnection>
